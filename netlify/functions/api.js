@@ -5,7 +5,7 @@ import {
   makeId,
   normalizeUsername,
   parseBody,
-  validateWalletAddress
+  validateBtcAddress
 } from "./lib/utils.js";
 
 function getRouteParts(event) {
@@ -162,8 +162,8 @@ export async function handler(event) {
     if (resource === "pages" && event.httpMethod === "POST") {
       const payload = sanitizePageInput(await parseBody(event));
       if (!payload.username) return json(400, { error: "Username is required" });
-      if (!validateWalletAddress(payload.btcAddress)) {
-        return json(400, { error: "Valid wallet address is required" });
+      if (!validateBtcAddress(payload.btcAddress)) {
+        return json(400, { error: "Valid Bitcoin address is required" });
       }
 
       const existing = await getPage(payload.username);

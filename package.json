@@ -10,8 +10,8 @@
     "netlify:dev": "netlify dev"
   },
   "dependencies": {
+    "@btc-vision/walletconnect": "^1.10.4",
     "@netlify/blobs": "^8.1.0",
-    "@tonconnect/ui-react": "^2.4.2",
     "qrcode.react": "^4.2.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

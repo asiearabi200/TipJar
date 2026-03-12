@@ -6,7 +6,6 @@ import ProgressBar from "../components/ProgressBar";
 import { checkDonation, createDonation, getDonations, getLeaderboard, getPage } from "../lib/api";
 import { formatDate, formatSats, satsToBtc, shortAddress } from "../lib/format";
 import { themeMap } from "../lib/themes";
-import { getWalletType } from "../lib/wallet";
 
 export default function TipPage() {
   const { username } = useParams();
@@ -64,7 +63,7 @@ export default function TipPage() {
       setPendingDonation(result.donation);
       setStatus({
         type: "success",
-        message: "Payment request created. Send the payment from OP Wallet and then click Check payment."
+        message: "Payment request created. Send the BTC from OP_WALLET or any compatible wallet and then click Check payment."
       });
     } catch (error) {
       setStatus({ type: "error", message: error.message });
@@ -114,10 +113,7 @@ export default function TipPage() {
   }
 
   const theme = themeMap[page.theme] || themeMap.aurora;
-  const walletType = getWalletType(page.btcAddress);
-  const qrValue =
-    pendingDonation?.paymentUri ||
-    (walletType === "ton" ? `ton://transfer/${page.btcAddress}` : `bitcoin:${page.btcAddress}`);
+  const qrValue = pendingDonation?.paymentUri || `bitcoin:${page.btcAddress}`;
 
   return (
     <div className="mx-auto max-w-7xl px-6">
@@ -146,8 +142,7 @@ export default function TipPage() {
                 <p className="mt-2 text-slate-300">@{page.username}</p>
                 <p className="mt-3 max-w-2xl text-slate-200">{page.bio}</p>
                 <p className="mt-4 text-sm text-slate-400">
-                  {walletType === "ton" ? "OP Wallet" : "Wallet"}: {shortAddress(page.btcAddress)} |
-                  {" "}Min message amount:{" "}
+                  Wallet: {shortAddress(page.btcAddress)} | Min message amount:{" "}
                   {formatSats(page.messageMinSats || 100)}
                 </p>
               </div>
@@ -231,7 +226,7 @@ export default function TipPage() {
                 type="submit"
                 className="rounded-full bg-amber-300 px-6 py-3 text-sm font-bold text-slate-950"
               >
-                Generate OP Wallet request
+                Generate QR request
               </button>
             </form>
 
@@ -244,10 +239,8 @@ export default function TipPage() {
                   <div className="space-y-2">
                     <p className="text-sm text-slate-400">Send exactly</p>
                     <p className="text-2xl font-bold text-white">
-                      {formatSats(pendingDonation.amountSats)}
-                      {walletType === "bitcoin"
-                        ? ` | ${satsToBtc(pendingDonation.amountSats).toFixed(8)} BTC`
-                        : ""}
+                      {formatSats(pendingDonation.amountSats)} |{" "}
+                      {satsToBtc(pendingDonation.amountSats).toFixed(8)} BTC
                     </p>
                     <p className="break-all text-sm text-slate-300">{page.btcAddress}</p>
                     <p className="text-xs text-slate-500">Status: {pendingDonation.status}</p>
@@ -330,9 +323,9 @@ export default function TipPage() {
           <h2 className="text-2xl font-bold text-white">How payment tracking works</h2>
           <ol className="mt-5 space-y-4 text-slate-300">
             <li>1. Create a payment request with sats amount and optional message.</li>
-            <li>2. Donor sends the payment to the page address using the QR code or OP Wallet.</li>
-            <li>3. Bitcoin pages can be checked against mempool.space from the page.</li>
-            <li>4. Confirmed donations feed the leaderboard and dashboard analytics.</li>
+            <li>2. Donor sends BTC to the page address using the QR code or OP_WALLET.</li>
+            <li>3. The app checks mempool.space for a matching transaction to that address.</li>
+            <li>4. Once found and confirmed, the donation feeds the leaderboard and dashboard.</li>
           </ol>
         </Shell>
       </div>

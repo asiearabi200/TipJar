@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import Shell from "../components/Shell";
 
 const features = [
-  "Create an OP Wallet-powered tip page in under a minute",
+  "Create an OP_NET wallet-powered tip page in under a minute",
   "Share a public page with QR code and supporter wall",
   "Track donations, stats, and top supporters from one dashboard"
 ];
@@ -14,14 +14,14 @@ export default function HomePage() {
         <div className="grid gap-10 md:grid-cols-[1.2fr_0.8fr] md:items-center">
           <div>
             <p className="mb-4 inline-flex rounded-full border border-amber-300/40 bg-amber-300/10 px-4 py-2 text-sm font-semibold text-amber-200">
-              OP Wallet creator page
+              OP_NET creator page
             </p>
             <h1 className="max-w-3xl font-display text-5xl font-bold tracking-tight text-white md:text-6xl">
-              Launch a tip page with OP Wallet onboarding, leaderboard, messages, and dashboard analytics.
+              Launch a BTC tip page with OP_NET wallet onboarding, leaderboard, messages, and dashboard analytics.
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
               TipJar OP is an MVP for streamers, open-source maintainers, and communities who
-              want a clean page for receiving crypto donations and showing public support.
+              want a clean page for receiving Bitcoin donations and showing public support.
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <Link
@@ -56,8 +56,8 @@ export default function HomePage() {
 
       <div id="how-it-works" className="grid gap-6 md:grid-cols-3">
         {[
-          ["1", "Create page", "Set username, connect OP Wallet or paste an address, then add avatar, bio, goal, and quick amounts."],
-          ["2", "Collect tips", "Donors enter sats and message, scan QR, and pay from OP Wallet or any compatible app."],
+          ["1", "Create page", "Set username, connect OP_WALLET or paste a BTC address, then add avatar, bio, goal, and quick amounts."],
+          ["2", "Collect tips", "Donors enter sats and message, scan QR, and pay from OP_WALLET or any compatible Bitcoin wallet."],
           ["3", "Track impact", "Dashboard shows totals, unique supporters, trends, and leaderboard."]
         ].map(([step, title, text]) => (
           <Shell key={step} className="p-6">
