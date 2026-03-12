@@ -1,6 +1,6 @@
-# TipJar BTC
+# TipJar OP
 
-Bitcoin tip-page MVP prepared for deployment on Netlify.
+Crypto tip-page MVP with OP Wallet onboarding prepared for deployment on Netlify.
 
 ## Stack
 
@@ -21,6 +21,7 @@ Bitcoin tip-page MVP prepared for deployment on Netlify.
 - Public leaderboard for all time, month, and week
 - Owner dashboard with totals, unique supporters, daily chart, full donation list, and embed snippet
 - Hide-message action for creator
+- Real OP Wallet connection via TON Connect for creator onboarding
 
 ## Local run
 
@@ -44,8 +45,14 @@ npx netlify dev
 5. Functions directory is already set to `netlify/functions` in `netlify.toml`.
 6. Deploy.
 
+## OP Wallet
+
+- The app uses `@tonconnect/ui-react` for real OP Wallet connection in the browser.
+- `tonconnect-manifest.json` is served dynamically from Netlify so the manifest origin matches the deployed site.
+- Connected OP Wallet accounts autofill the recipient wallet address on the create page.
+
 ## Notes
 
 - Data persistence is handled by Netlify Blobs, so a separate database is not required for the deployed MVP.
-- Payment confirmation is manual through the `Check payment` button.
-- Wallet-connection flows from the full spec are not included; MVP uses direct BTC address payments.
+- Payment confirmation is manual through the `Check payment` button for Bitcoin-style pages.
+- OP Wallet connection is real; broader TON-native donation verification is not implemented in this MVP yet.

@@ -1,6 +1,8 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useTonWallet } from "@tonconnect/ui-react";
 import Shell from "../components/Shell";
+import WalletConnectPanel from "../components/WalletConnectPanel";
 import { createPage } from "../lib/api";
 import { themeOptions } from "../lib/themes";
 
@@ -20,6 +22,7 @@ export default function CreatePage() {
   const [status, setStatus] = useState({ type: "", message: "" });
   const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
+  const wallet = useTonWallet();
 
   const previewAmounts = useMemo(
     () =>
@@ -29,6 +32,15 @@ export default function CreatePage() {
         .filter(Boolean),
     [form.quickAmounts]
   );
+
+  useEffect(() => {
+    const walletAddress = wallet?.account?.address;
+    if (!walletAddress) return;
+
+    setForm((current) =>
+      current.btcAddress === walletAddress ? current : { ...current, btcAddress: walletAddress }
+    );
+  }, [wallet]);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -57,12 +69,16 @@ export default function CreatePage() {
               Create page
             </p>
             <h1 className="mt-3 font-display text-4xl font-bold text-white">
-              Configure your Bitcoin tip profile
+              Configure your OP Wallet tip profile
             </h1>
             <p className="mt-3 max-w-2xl text-slate-300">
-              This covers the MVP from the spec: username, BTC address, avatar, bio, optional
-              goal, quick donation presets, and theme selection.
+              This covers the MVP from the spec: username, OP Wallet connection or wallet
+              address, avatar, bio, optional goal, quick donation presets, and theme selection.
             </p>
+          </div>
+
+          <div className="mb-8">
+            <WalletConnectPanel />
           </div>
 
           <form className="grid gap-5" onSubmit={handleSubmit}>
@@ -93,10 +109,11 @@ export default function CreatePage() {
               placeholder="Tell supporters what you are building."
             />
             <Field
-              label="Bitcoin address"
+              label="OP Wallet address"
+              hint="Connect OP Wallet above to autofill this, or paste the recipient address manually"
               value={form.btcAddress}
               onChange={(value) => setForm((current) => ({ ...current, btcAddress: value }))}
-              placeholder="bc1q..."
+              placeholder="Paste your OP Wallet address"
             />
             <div className="grid gap-5 md:grid-cols-2">
               <Field
@@ -143,7 +160,7 @@ export default function CreatePage() {
               disabled={submitting}
               className="rounded-full bg-amber-300 px-6 py-3 text-sm font-bold text-slate-950 transition hover:-translate-y-0.5 disabled:opacity-70"
             >
-              {submitting ? "Saving..." : "Create tip page"}
+              {submitting ? "Saving..." : "Create OP Wallet tip page"}
             </button>
           </form>
         </Shell>
